@@ -1,0 +1,31 @@
+name: islamic_prayer_clock
+description: Digital Islamic Prayer Clock by Mufti Hafiz Muhammad Shoaib Khan Alai.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  adhan: ^2.0.0          # Prayer times calculation
+  http: ^1.1.0           # API calls
+  geolocator: ^10.1.0    # Location
+  flutter_local_notifications: ^16.3.0  # Notifications
+  audioplayers: ^5.2.1   # Adhan sound
+  intl: ^0.18.1          # Date formatting
+  timezone: ^0.9.2       # Timezone support
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/adhan/
