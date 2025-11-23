@@ -1,0 +1,60 @@
+name: Build & Release APK
+
+# جب بھی main branch پر push ہو یا manually trigger ہو
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:    # Manual trigger button بھی آ جائے گا
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # Release بنانے کے لیے
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'   # یا latest stable
+          channel: 'stable'
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Build Release APK
+        run: |
+          flutter build apk --release --split-per-abi
+
+      - name: List generated APKs
+        run: ls -la build/app/outputs/flutter-apk/
+
+      - name: Create Release & Upload APKs
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ github.run_number }}
+          name: Islamic Prayer Clock v${{ github.run_number }}
+          body: |
+            میڈ بائے مفتی حافظ محمد شعیب خان آلائی  
+            Updated: ${{ github.event.head_commit.message }}
+            
+            Features:
+            • Accurate Prayer Times (Aladhan API)
+            • Hijri + Gregorian Date
+            • Auto Adhan with Sound
+            • Ramadan, Eid al-Fitr & Eid al-Adha Highlighted
+          artifacts: |
+            build/app/outputs/flutter-apk/app-*-release.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          draft: false
+          prerelease: false
