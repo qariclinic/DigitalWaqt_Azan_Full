@@ -1,0 +1,2 @@
+# DigitalWaqt_Azan_Full
+DigitalWaqt_Azan_Full
